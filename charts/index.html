@@ -14,7 +14,9 @@
 <body>
   <div id="header"></div>
 
-  This page intentionally left blank
+  <div class="d-flex justify-content-center align-items-center">
+    <canvas id="wordCloudCanvas" width="1000" height="500"></canvas>
+  </div>
 
   <!-- <div id="footer"></div> -->
 </body>
@@ -27,5 +29,24 @@
 <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
 
 <script src="/js/headfoot.js"></script>
+<script>
+  $(document).ready(function () {
+    $.getJSON('https://childcybercare.duckdns.org/api/get_word_cloud_dummy', function (wordList) {
+      $('#wordCloudCanvas').show();
+
+      WordCloud(document.getElementById('wordCloudCanvas'), {
+        list: wordList.data,
+        gridSize: 6,
+        weightFactor: 3,
+        fontFamily: 'Arial',
+        color: 'random-dark',
+        backgroundColor: '#f8f9fa',
+      });
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+      $('#loadingMessage').text('Failed to load word cloud: ' + textStatus);
+      console.error('Error:', errorThrown);
+    });
+  });
+</script>
 
 </html>
