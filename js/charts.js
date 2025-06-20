@@ -4,6 +4,8 @@ var endpointRoot = "https://childcybercare.duckdns.org/api";
 var bullyStat = [];
 var socmedUsage = [];
 var chartInstance = null;
+var cMin = 0;
+var cMax = 0;
 
 $(document).ready(function () {
     getWordCloud();
@@ -150,8 +152,8 @@ function drawScatterPlot() {
     const xMax = Math.floor(Math.max(...xValues) + 1);
     const yMin = Math.ceil(Math.min(...yValues) - 1);
     const yMax = Math.floor(Math.max(...yValues) + 1);
-    const cMin = Math.min(...cValues);
-    const cMax = Math.max(...cValues);
+    cMin = Math.min(...cValues);
+    cMax = Math.max(...cValues);
 
     const points = socmedUsage.map(item => ({
         x: item.x,
@@ -166,7 +168,7 @@ function drawScatterPlot() {
         type: 'scatter',
         data: {
             datasets: [{
-                label: 'Scatterplot with color dimension',
+                label: 'Mental Health Score (red is worse)',
                 data: points,
                 parsing: false,
                 showLine: false,
@@ -196,9 +198,13 @@ function drawScatterPlot() {
             plugins: {
                 tooltip: {
                     enabled: false
+                },
+                legend: {
+                    display: false
                 }
             }
-        }
+        },
+        plugins: [colorLegendPlugin]
     });
 }
 
@@ -235,3 +241,23 @@ $('#regionSelect').on('changed.bs.select', function () {
     const selectedRegions = $(this).val(); // Array of selected values
     updateBarChart(selectedRegions);
 });
+
+// custom plugin to add color legend
+const colorLegendPlugin = {
+    id: 'colorLegend',
+    afterDraw(chart) {
+        const container = document.getElementById('legendContainer');
+        if (!container) return;
+
+        const width = chart.width || 300;
+        const gradients = cMax - cMin + 1;
+        let html = '<div><small>Mental Health Score (smaller is worse)</small></div><div style="display:flex;">';
+        for (let i = 0; i < gradients; i++) {
+            const val = cMin + i;
+            const color = getColorFromValue(val, cMin, cMax);
+            html += `<div style="flex:1; height:12px; background:${color};"></div>`;
+        }
+        html += `</div><div class="d-flex justify-content-between"><small>${cMin}</small><small>${cMax}</small></div>`;
+        container.innerHTML = html;
+    }
+};
