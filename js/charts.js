@@ -224,6 +224,7 @@ function switchBox() {
 
     // Copy height from box1 to box2
     box2.style.minHeight = box1.offsetHeight + 'px';
+    box2.style.maxHeight = box1.offsetHeight + 'px';
 
     box1.classList.add('d-none');
     box2.classList.remove('d-none');
