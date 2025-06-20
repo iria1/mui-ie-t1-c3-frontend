@@ -12,9 +12,11 @@ $(document).ready(function () {
 });
 
 function getWordCloud() {
+    // get word cloud data
     $.getJSON(`${endpointRoot}/get_word_cloud`, function (wordList) {
         $('#wordCloudCanvas').show();
 
+        // draw wordcloud
         WordCloud(document.getElementById('wordCloudCanvas'), {
             list: wordList.data,
             gridSize: 24,
@@ -28,30 +30,41 @@ function getWordCloud() {
 }
 
 function getBullyStat() {
+    // get list of countries for combo box
     $.getJSON(`${endpointRoot}/get_bully_stat_region_list`, function (response) {
-        const $select = $('#regionSelect');
+        const select = $('#regionSelect');
 
         var data = response.data;
 
+        // add combobox options using queried data
         data.forEach(region => {
             const option = $('<option>', {
                 value: region.code,
                 text: region.name
             });
-            $select.append(option);
+            select.append(option);
         });
 
         // Important: refresh the Bootstrap Select UI
-        $select.selectpicker('refresh');
+        select.selectpicker('refresh');
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('Error:', errorThrown);
     });
 
+    // get bullying statistics data for bar chart
     $.getJSON(`${endpointRoot}/get_bully_stat`, function (response) {
+        // data is loaded into variable to eliminate need for re-querying
+        // everytime country selection changes
         bullyStat = response.data;
 
+        // start with 3 countries pre-selected
         const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-        //const allRegions = [...new Set(bullyStat.map(d => d.country))];
-        console.log(allRegions);
-        $('#regionSelect').selectpicker('val', allRegions); // preselect
+        //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
+
+        // change combo box selections
+        $('#regionSelect').selectpicker('val', allRegions);
+
+        // draw bar chart
         updateBarChart(allRegions);
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.error('Error:', errorThrown);
@@ -59,9 +72,11 @@ function getBullyStat() {
 }
 
 function getSocmedUsage() {
+    // get social media usage data for scatter plot
     $.getJSON(`${endpointRoot}/get_socmed_usage`, function (response) {
         socmedUsage = response.data;
 
+        // draw scatter plot
         drawScatterPlot();
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.error('Error:', errorThrown);
@@ -69,6 +84,7 @@ function getSocmedUsage() {
 }
 
 function updateBarChart(selectedRegions) {
+    // filter data by selected countries
     const filtered = bullyStat.filter(item => selectedRegions.includes(item.country));
 
     const countries = filtered.map(d => d.country);
@@ -115,7 +131,7 @@ function updateBarChart(selectedRegions) {
                         max: 100,
                         title: {
                             display: true,
-                            text: '%'
+                            text: 'Percentage of cyberbullying victims'
                         }
                     }
                 }
@@ -129,6 +145,7 @@ function drawScatterPlot() {
     const yValues = socmedUsage.map(d => d.y);
     const cValues = socmedUsage.map(d => d.c);
 
+    // get max and min values to adjust plot ranges
     const xMin = Math.ceil(Math.min(...xValues) - 1);
     const xMax = Math.floor(Math.max(...xValues) + 1);
     const yMin = Math.ceil(Math.min(...yValues) - 1);
@@ -151,9 +168,9 @@ function drawScatterPlot() {
             datasets: [{
                 label: 'Scatterplot with color dimension',
                 data: points,
-                parsing: false, // disables automatic parsing of x/y
+                parsing: false,
                 showLine: false,
-                pointBackgroundColor: points.map(p => p.backgroundColor), // assign individual colors
+                pointBackgroundColor: points.map(p => p.backgroundColor),
                 pointRadius: points.map(p => p.radius)
             }]
         },
@@ -200,6 +217,7 @@ function getColorFromValue(value, min, max) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
+// change box content when button is pressed
 function switchBox() {
     const box1 = document.getElementById('box1');
     const box2 = document.getElementById('box2');
@@ -211,6 +229,7 @@ function switchBox() {
     box2.classList.remove('d-none');
 }
 
+// update bar chart when combo box values change
 $('#regionSelect').on('changed.bs.select', function () {
     const selectedRegions = $(this).val(); // Array of selected values
     updateBarChart(selectedRegions);
