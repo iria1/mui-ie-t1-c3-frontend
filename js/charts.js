@@ -15,7 +15,7 @@ $(document).ready(function () {
 
 function getWordCloud() {
     // get word cloud data
-    $.getJSON(`${endpointRoot}/get_word_cloud`, function (wordList) {
+    $.getJSON(`${endpointRoot}/charts/get_word_cloud`, function (wordList) {
         $('#wordCloudCanvas').show();
 
         // draw wordcloud
@@ -33,7 +33,7 @@ function getWordCloud() {
 
 function getBullyStat() {
     // get list of countries for combo box
-    $.getJSON(`${endpointRoot}/get_bully_stat_region_list`, function (response) {
+    $.getJSON(`${endpointRoot}/charts/get_bully_stat_region_list`, function (response) {
         const select = $('#regionSelect');
 
         var data = response.data;
@@ -54,7 +54,7 @@ function getBullyStat() {
     });
 
     // get bullying statistics data for bar chart
-    $.getJSON(`${endpointRoot}/get_bully_stat`, function (response) {
+    $.getJSON(`${endpointRoot}/charts/get_bully_stat`, function (response) {
         // data is loaded into variable to eliminate need for re-querying
         // everytime country selection changes
         bullyStat = response.data;
@@ -75,7 +75,7 @@ function getBullyStat() {
 
 function getSocmedUsage() {
     // get social media usage data for scatter plot
-    $.getJSON(`${endpointRoot}/get_socmed_usage`, function (response) {
+    $.getJSON(`${endpointRoot}/charts/get_socmed_usage`, function (response) {
         socmedUsage = response.data;
 
         // draw scatter plot
