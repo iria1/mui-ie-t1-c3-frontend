@@ -1,0 +1,25 @@
+#chatWindow {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-bubble {
+    display: inline-block; /*shrink to fit content*/
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin: 5px 0;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+
+.chat-bubble.user {
+    background-color: #007bff;
+    color: #fff;
+    margin-left: auto; /* push right */
+}
+
+.chat-bubble.bot {
+    background-color: #e9ecef;
+    color: #000;
+    margin-right: auto; /* push left */
+}
