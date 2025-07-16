@@ -156,13 +156,16 @@
               Great job exploring! Before you go, take a moment to think: What's one kind thing you can do online
               today?<br>
               <br>
-              <ul class="list-unstyled">
-                <li>✅ I will think before I post.</li>
-                <li>✅ I will speak up if I see bullying.</li>
-                <li>✅ I will take breaks from my screen.</li>
-              </ul>
+              <div class="form-check form-check-lg">
+                <input class="form-check-input" type="checkbox" value="" id="resp1" onclick="checkCheckboxStatus()">
+                <label class="form-check-label" for="resp1">I will think before I post.</label><br>
+                <input class="form-check-input" type="checkbox" value="" id="resp2" onclick="checkCheckboxStatus()">
+                <label class="form-check-label" for="resp2">I will speak up if I see bullying.</label><br>
+                <input class="form-check-input" type="checkbox" value="" id="resp3" onclick="checkCheckboxStatus()">
+                <label class="form-check-label" for="resp3">I will take breaks from my screen.</label>
+              </div>
               <br>
-              <button class="btn btn-secondary" onclick="switchBox()">I promise!</button>
+              <button id="btnResp" class="btn btn-secondary" onclick="switchBox()" disabled>I promise!</button>
             </div>
             <div class="col-lg-2">
               <img src="/img/chart_06.png" class="img-fluid">

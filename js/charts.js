@@ -261,3 +261,11 @@ const colorLegendPlugin = {
         container.innerHTML = html;
     }
 };
+
+function checkCheckboxStatus(){
+    if ($('#resp1').prop('checked') && $('#resp2').prop('checked') && $('#resp3').prop('checked')){
+        $('#btnResp').prop("disabled", false);
+    } else {
+        $('#btnResp').prop("disabled", true);
+    }
+}
