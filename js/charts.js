@@ -1,11 +1,10 @@
-//var endpointRoot = "http://localhost:5000/api";
-var endpointRoot = "https://childcybercare.duckdns.org/api";
-
 var bullyStat = [];
 var socmedUsage = [];
 var chartInstance = null;
 var cMin = 0;
 var cMax = 0;
+
+var scatterChart = null;
 
 $(document).ready(function () {
     getWordCloud();
@@ -13,75 +12,110 @@ $(document).ready(function () {
     getSocmedUsage();
 });
 
-function getWordCloud() {
+function getWordCloud(label = "nc") {
     // get word cloud data
-    $.getJSON(`${endpointRoot}/charts/get_word_cloud`, function (wordList) {
-        $('#wordCloudCanvas').show();
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        method: 'GET',
+        data: {
+            label: label
+        },
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (wordList) {
+            $('#wordCloudCanvas').show();
 
-        // draw wordcloud
-        WordCloud(document.getElementById('wordCloudCanvas'), {
-            list: wordList.data,
-            gridSize: 24,
-            weightFactor: 3,
-            fontFamily: 'Arial',
-            color: 'random-dark',
-        });
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // draw wordcloud
+            WordCloud(document.getElementById('wordCloudCanvas'), {
+                list: wordList.data,
+                gridSize: 24,
+                weightFactor: 3,
+                fontFamily: 'Arial',
+                color: 'random-dark',
+            });
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
 function getBullyStat() {
     // get list of countries for combo box
-    $.getJSON(`${endpointRoot}/charts/get_bully_stat_region_list`, function (response) {
-        const select = $('#regionSelect');
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_bully_stat_region_list`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            const select = $('#regionSelect');
 
-        var data = response.data;
+            var data = response.data;
 
-        // add combobox options using queried data
-        data.forEach(region => {
-            const option = $('<option>', {
-                value: region.code,
-                text: region.name
+            // add combobox options using queried data
+            data.forEach(region => {
+                const option = $('<option>', {
+                    value: region.code,
+                    text: region.name
+                });
+                select.append(option);
             });
-            select.append(option);
-        });
 
-        // Important: refresh the Bootstrap Select UI
-        select.selectpicker('refresh');
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // Important: refresh the Bootstrap Select UI
+            select.selectpicker('refresh');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 
     // get bullying statistics data for bar chart
-    $.getJSON(`${endpointRoot}/charts/get_bully_stat`, function (response) {
-        // data is loaded into variable to eliminate need for re-querying
-        // everytime country selection changes
-        bullyStat = response.data;
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_bully_stat`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            // data is loaded into variable to eliminate need for re-querying
+            // everytime country selection changes
+            bullyStat = response.data;
 
-        // start with 3 countries pre-selected
-        const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-        //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
+            // start with 3 countries pre-selected
+            const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
+            //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
 
-        // change combo box selections
-        $('#regionSelect').selectpicker('val', allRegions);
+            // change combo box selections
+            $('#regionSelect').selectpicker('val', allRegions);
 
-        // draw bar chart
-        updateBarChart(allRegions);
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // draw bar chart
+            updateBarChart(allRegions);
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
 function getSocmedUsage() {
     // get social media usage data for scatter plot
-    $.getJSON(`${endpointRoot}/charts/get_socmed_usage`, function (response) {
-        socmedUsage = response.data;
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_socmed_usage`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            socmedUsage = response.data;
 
         // draw scatter plot
-        drawScatterPlot();
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+        drawScatterPlot_v2('socmed');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
@@ -142,72 +176,6 @@ function updateBarChart(selectedRegions) {
     }
 }
 
-function drawScatterPlot() {
-    const xValues = socmedUsage.map(d => d.x);
-    const yValues = socmedUsage.map(d => d.y);
-    const cValues = socmedUsage.map(d => d.c);
-
-    // get max and min values to adjust plot ranges
-    const xMin = Math.ceil(Math.min(...xValues) - 1);
-    const xMax = Math.floor(Math.max(...xValues) + 1);
-    const yMin = Math.ceil(Math.min(...yValues) - 1);
-    const yMax = Math.floor(Math.max(...yValues) + 1);
-    cMin = Math.min(...cValues);
-    cMax = Math.max(...cValues);
-
-    const points = socmedUsage.map(item => ({
-        x: item.x,
-        y: item.y,
-        backgroundColor: getColorFromValue(item.c, cMin, cMax),
-        radius: 6
-    }));
-
-    const ctx = document.getElementById('scatterChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Mental Health Score (red is worse)',
-                data: points,
-                parsing: false,
-                showLine: false,
-                pointBackgroundColor: points.map(p => p.backgroundColor),
-                pointRadius: points.map(p => p.radius)
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    min: xMin,
-                    max: xMax,
-                    title: {
-                        display: true,
-                        text: 'Average Daily Social Media Usage (Hours)'
-                    }
-                },
-                y: {
-                    min: yMin,
-                    max: yMax,
-                    title: {
-                        display: true,
-                        text: 'Sleep Hours per Night'
-                    }
-                }
-            },
-            plugins: {
-                tooltip: {
-                    enabled: false
-                },
-                legend: {
-                    display: false
-                }
-            }
-        },
-        plugins: [colorLegendPlugin]
-    });
-}
-
 function getColorFromValue(value, min, max) {
     // Clamp value to expected range
     const clamped = Math.max(min, Math.min(max, value));
@@ -242,30 +210,86 @@ $('#regionSelect').on('changed.bs.select', function () {
     updateBarChart(selectedRegions);
 });
 
-// custom plugin to add color legend
-const colorLegendPlugin = {
-    id: 'colorLegend',
-    afterDraw(chart) {
-        const container = document.getElementById('legendContainer');
-        if (!container) return;
-
-        const width = chart.width || 300;
-        const gradients = cMax - cMin + 1;
-        let html = '<div><small>Mental Health Score (smaller is worse)</small></div><div style="display:flex;">';
-        for (let i = 0; i < gradients; i++) {
-            const val = cMin + i;
-            const color = getColorFromValue(val, cMin, cMax);
-            html += `<div style="flex:1; height:12px; background:${color};"></div>`;
-        }
-        html += `</div><div class="d-flex justify-content-between"><small>${cMin}</small><small>${cMax}</small></div>`;
-        container.innerHTML = html;
-    }
-};
-
-function checkCheckboxStatus(){
-    if ($('#resp1').prop('checked') && $('#resp2').prop('checked') && $('#resp3').prop('checked')){
+function checkCheckboxStatus() {
+    if ($('#resp1').prop('checked') && $('#resp2').prop('checked') && $('#resp3').prop('checked')) {
         $('#btnResp').prop("disabled", false);
     } else {
         $('#btnResp').prop("disabled", true);
     }
+}
+
+function handleTabClick(name) {
+    drawScatterPlot_v2(name);
+}
+
+function drawScatterPlot_v2(name) {
+    var xAxisLabel = '';
+    if (name == 'socmed') {
+        xAxisLabel = 'Average Daily Social Media Usage (Hours)';
+    } else if (name == 'sleep') {
+        xAxisLabel = 'Sleep Hours per Night';
+    }
+
+    const xValues = socmedUsage.map(d => d['x_' + name]);
+    const yValues = socmedUsage.map(d => d.y);
+
+    const xMin = Math.ceil(Math.min(...xValues) - 1);
+    const xMax = Math.floor(Math.max(...xValues) + 1);
+    const yMin = Math.ceil(Math.min(...yValues) - 1);
+    const yMax = Math.floor(Math.max(...yValues) + 1);
+
+    const points = socmedUsage.map(item => ({
+        x: item['x_' + name],
+        y: item.y,
+        backgroundColor: 'rgba(255, 0, 0, 1)',
+        radius: 6
+    }));
+
+    var ctx = document.getElementById('scatterChart').getContext('2d');
+
+    if (scatterChart != null) {
+        scatterChart.destroy();
+    }
+
+    scatterChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Mental Health Score',
+                data: points,
+                parsing: false,
+                showLine: false,
+                pointBackgroundColor: points.map(p => p.backgroundColor),
+                pointRadius: points.map(p => p.radius)
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    min: xMin,
+                    max: xMax,
+                    title: {
+                        display: true,
+                        text: xAxisLabel
+                    }
+                },
+                y: {
+                    min: yMin,
+                    max: yMax,
+                    title: {
+                        display: true,
+                        text: 'Mental Health Score'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
 }

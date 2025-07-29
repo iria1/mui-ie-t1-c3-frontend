@@ -1,6 +1,3 @@
-//var endpointRoot = "http://localhost:5000/api";
-var endpointRoot = "https://childcybercare.duckdns.org/api";
-
 const input = document.getElementById('userInput');
 
 input.addEventListener('keypress', function (event) {
@@ -21,9 +18,13 @@ async function sendMessage() {
     input.value = '';
 
     // Send to backend
-    $.post({
-        url: `${endpointRoot}/chatbot/get_response_from_chatbot`,
+    $.ajax({
+        url: `${endpointRoot}/v1/chatbot/get_response_from_chatbot`,
+        method: 'POST',
         contentType: 'application/json',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
         data: JSON.stringify({ message: message }),
         success: function (data) {
             const reply = data.data.response || '[No response]';

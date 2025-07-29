@@ -1,6 +1,3 @@
-//var endpointRoot = "http://localhost:5000/api";
-var endpointRoot = "https://childcybercare.duckdns.org/api";
-
 var bullyStat = [];
 var socmedUsage = [];
 var chartInstance = null;
@@ -15,73 +12,105 @@ $(document).ready(function () {
 
 function getWordCloud() {
     // get word cloud data
-    $.getJSON(`${endpointRoot}/get_word_cloud`, function (wordList) {
-        $('#wordCloudCanvas').show();
+    $.ajax({
+        url: `${endpointRoot}/v1/charts/get_word_cloud`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (wordList) {
+            $('#wordCloudCanvas').show();
 
-        // draw wordcloud
-        WordCloud(document.getElementById('wordCloudCanvas'), {
-            list: wordList.data,
-            gridSize: 24,
-            weightFactor: 3,
-            fontFamily: 'Arial',
-            color: 'random-dark',
-        });
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // draw wordcloud
+            WordCloud(document.getElementById('wordCloudCanvas'), {
+                list: wordList.data,
+                gridSize: 24,
+                weightFactor: 3,
+                fontFamily: 'Arial',
+                color: 'random-dark',
+            });
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
 function getBullyStat() {
     // get list of countries for combo box
-    $.getJSON(`${endpointRoot}/get_bully_stat_region_list`, function (response) {
-        const select = $('#regionSelect');
+    $.ajax({
+        url: `${endpointRoot}/v1/charts/get_bully_stat_region_list`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            const select = $('#regionSelect');
 
-        var data = response.data;
+            var data = response.data;
 
-        // add combobox options using queried data
-        data.forEach(region => {
-            const option = $('<option>', {
-                value: region.code,
-                text: region.name
+            // add combobox options using queried data
+            data.forEach(region => {
+                const option = $('<option>', {
+                    value: region.code,
+                    text: region.name
+                });
+                select.append(option);
             });
-            select.append(option);
-        });
 
-        // Important: refresh the Bootstrap Select UI
-        select.selectpicker('refresh');
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // Important: refresh the Bootstrap Select UI
+            select.selectpicker('refresh');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 
     // get bullying statistics data for bar chart
-    $.getJSON(`${endpointRoot}/get_bully_stat`, function (response) {
-        // data is loaded into variable to eliminate need for re-querying
-        // everytime country selection changes
-        bullyStat = response.data;
+    $.ajax({
+        url: `${endpointRoot}/v1/charts/get_bully_stat`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            // data is loaded into variable to eliminate need for re-querying
+            // everytime country selection changes
+            bullyStat = response.data;
 
-        // start with 3 countries pre-selected
-        const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-        //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
+            // start with 3 countries pre-selected
+            const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
+            //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
 
-        // change combo box selections
-        $('#regionSelect').selectpicker('val', allRegions);
+            // change combo box selections
+            $('#regionSelect').selectpicker('val', allRegions);
 
-        // draw bar chart
-        updateBarChart(allRegions);
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // draw bar chart
+            updateBarChart(allRegions);
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
 function getSocmedUsage() {
     // get social media usage data for scatter plot
-    $.getJSON(`${endpointRoot}/get_socmed_usage`, function (response) {
-        socmedUsage = response.data;
+    $.ajax({
+        url: `${endpointRoot}/v1/charts/get_socmed_usage`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            socmedUsage = response.data;
 
-        // draw scatter plot
-        drawScatterPlot();
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('Error:', errorThrown);
+            // draw scatter plot
+            drawScatterPlot();
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
     });
 }
 
