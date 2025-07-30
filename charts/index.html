@@ -15,12 +15,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css"
     rel="stylesheet">
   <link href="/css/auth.css" rel="stylesheet">
-
-  <style>
-    .bg-info {
-      background-color: #eaf1fe !important;
-    }
-  </style>
 </head>
 
 <body class="hidden">
@@ -51,176 +45,65 @@
     </div>
   </nav>
 
-  <div class="m-5">
-    <!-- Header bubble -->
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="bg-info mx-5 p-5 rounded-5 shadow">
-          <div class="row">
-            <div class="col-lg-1">
-              <img src="/img/chart_01.png" class="img-fluid">
-            </div>
-            <div class="col-lg-11 d-flex align-items-center">
-              Hi there! I'm Niko the Net Fox.<br>
-              Let's explore the digital world together and learn how to stay safe and kind online!
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="container mt-4">
+    <div>
+      <h1>MISSION KINDNESS: EXPLORE THE DIGITAL WORLD WITH CARO!</h1>
 
-    <!-- Bar chart -->
-    <div class="row mt-5">
-      <div class="col-lg-4 d-flex align-items-center">
-        <div class="bg-info m-5 p-5 rounded-5 shadow">
-          <div>
-            First, let's see how kids in different countries are being affected.<br>
-            You're not alone and we can learn from others too.
-          </div>
-          <div class="mt-3 d-flex justify-content-end">
-            <img src="/img/chart_02.png" class="img-fluid" style="height: 30%;width: 30%;">
-          </div>
+      <div class="bg-info d-flex align-items-center">
+        <img src="/img/chart_01s.png">
+        <div>
+          <p>Hi there! My name is Caro! I am your special agent at ChildCyberCare! "Welcome to ChildCyberCare - your
+            safe space to explore the digital world!</p>
+          <p>I am here as your friendly guide who shows you how to be kind online, spot mean behavior, and protect
+            yourself while having fun on the internet!</p>
+          <p>Here, you'll discover cool tips, play interactive visualizations, and learn how to make the online world a
+            happier place for everyone. Ready to join Caro, our super-cool cyber agent, and become a Cyber Kindness
+            Hero? Let's dive in and make the internet awesome together!"</p>
         </div>
       </div>
-      <div class="row col-lg-8 rounded-5 shadow p-5">
-        <div class="col-lg-3 d-flex align-items-center">
-          <div>
-            Select country:
-            <select class="selectpicker" multiple id="regionSelect" title="Select regions"></select>
-          </div>
-        </div>
-        <div class="col-lg-9">
-          <div class="d-flex justify-content-center align-items-center" style="margin: 0px auto;max-width: 1000px;">
-            <canvas id="barChart" width="1000" height="500"></canvas>
-          </div>
-          <div class="mt-3">
-            <p class="text-muted small fst-italic">
-              Source: <a href="https://data.unicef.org/topic/child-protection/violence/bullying/"
-                target="_blank">UNICEF</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Word cloud -->
-    <div class="row mt-5">
-      <div class="col-lg-8 rounded-5 shadow p-5">
-        <div class="d-flex justify-content-center align-items-center">
-          <canvas id="wordCloudCanvas" width="1000" height="500"></canvas>
-        </div>
-        <div class="mt-3">
-          <p class="text-muted small fst-italic">
-            Source: <a
-              href="https://www.kaggle.com/code/lizakonopelko/cyberbullying-on-twitter-visualization#Word-cloud"
-              target="_blank">Cyberbullying on Twitter Visualization</a>
-          </p>
-        </div>
-      </div>
-      <div class="col-lg-4 d-flex align-items-center">
-        <div class="bg-info m-5 p-5 rounded-5 shadow">
-          <div>
-            Some words hurt more than we think. Here are some words that people have used online that made others feel
-            bad.<br>
-            Let's promise not to use them.
-          </div>
-          <div class="mt-3">
-            <img src="/img/chart_03.png" class="img-fluid" style="height: 30%;width: 30%">
+      <h2>HOW KIDS ARE IN ASEAN COUNTRIES ARE AFFECTED BY CYBERBULLYING</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="rounded-5 p-3 bg-info">
+            <p>This chart shows how kids in ASEAN countries are experiencing online bullying. By selecting a country and
+              gender, you can see how big the problem is and understand that no one is alone in facing these challenges.
+              It helps us learn from each other and find ways to stay safe online.</p>
+            <p class="fw-bold">Mission: Be a global buddy—send a positive message to a friend today!</p>
           </div>
         </div>
-      </div>
-    </div>
+        <div class="col-md-6 bg-danger">
 
-    <!-- Scatter plot -->
-    <div class="row mt-5">
-      <div class="col-lg-3 d-flex align-items-center">
-        <div class="bg-info m-5 p-5 rounded-5 shadow">
-          <div>
-            Now let's think about how much time we spend on screens.<br>
-            Did you know it can affect your mood and sleep?
-          </div>
-          <div class="mt-3 d-flex justify-content-end">
-            <img src="/img/chart_04.png" class="img-fluid" style="height: 50%;width: 50%">
+        </div>
+      </div>
+
+      <h2>WORDS THAT HURT</h2>
+      <div class="row">
+        <div class="col-md-6 bg-warning">
+
+        </div>
+        <div class="col-md-6">
+          <div class="rounded-5 p-3 bg-info">
+            <p>This word cloud shows some of the hurtful words people have used online. Even though words seem small,
+              they can leave a big impact on others. Here, we learn the importance of kind communication and promise not
+              to use harmful words that can hurt someone's feelings.</p>
+            <p class="fw-bold">Mission: Type 3 kind words in your next chat - it can make someone's day!</p>
           </div>
         </div>
       </div>
-      <div class="row col-lg-9 rounded-5 shadow p-5">
-        <div class="col-lg-9">
-          <ul class="nav nav-tabs nav-justified">
-            <li class="nav-item">
-              <a class="nav-link active" data-bs-toggle="tab" href="#" onclick="handleTabClick('socmed')">Daily Social Media Usage</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" href="#" onclick="handleTabClick('sleep')">Sleep Hours</a>
-            </li>
-          </ul>
-          <div class="d-flex justify-content-center align-items-center" style="margin: 0px auto;max-width: 1000px; ">
-            <canvas id="scatterChart" width="1000" height="500"></canvas>
-          </div>
-          <div class="mt-3">
-            <p class="text-muted small fst-italic">
-              Source: <a href="https://www.kaggle.com/datasets/adilshamim8/social-media-addiction-vs-relationships/data"
-                target="_blank">Students’ Social Media Addiction</a>
-            </p>
-          </div>
-        </div>
-        <div class="col-lg-3 d-flex align-items-center">
-          <div>
-            <div>
-              See how the dot turns red when screen time goes up and sleep goes down?<br>
-              That's a sign your brain and mood might not be feeling so great.<br>
-              <br>
-              More red = more stress!
-            </div>
-            <div class="mt-3">
-              <img src="/img/chart_05.png" class="img-fluid" style="height: 40%;width: 40%">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Summary & feedback -->
-    <div class="row">
-      <div class="col-lg-12">
-        <!-- Initial view -->
-        <div id="box1" class="bg-info m-5 p-5 rounded-5 shadow">
-          <div class="row">
-            <div class="col-lg-10">
-              Great job exploring! Before you go, take a moment to think: What's one kind thing you can do online
-              today?<br>
-              <br>
-              <div class="form-check form-check-lg">
-                <input class="form-check-input" type="checkbox" value="" id="resp1" onclick="checkCheckboxStatus()">
-                <label class="form-check-label" for="resp1">I will think before I post.</label><br>
-                <input class="form-check-input" type="checkbox" value="" id="resp2" onclick="checkCheckboxStatus()">
-                <label class="form-check-label" for="resp2">I will speak up if I see bullying.</label><br>
-                <input class="form-check-input" type="checkbox" value="" id="resp3" onclick="checkCheckboxStatus()">
-                <label class="form-check-label" for="resp3">I will take breaks from my screen.</label>
-              </div>
-              <br>
-              <button id="btnResp" class="btn btn-secondary" onclick="switchBox()" disabled>I promise!</button>
-            </div>
-            <div class="col-lg-2">
-              <img src="/img/chart_06.png" class="img-fluid">
-            </div>
+      <h2>SCREEN TIME AND STRESS</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="rounded-5 p-3 bg-info">
+            <p>This scatter plot shows how screen time can affect our mood and stress levels. When we spend too much
+              time on screens, our brains can feel tired and stressed - the more red dots, the higher the stress! This
+              visualization reminds us to take breaks and enjoy life offline too.</p>
+            <p class="fw-bold">Mission: Every hour, do a 2-minute “screen shake” - dance or stretch!</p>
           </div>
         </div>
+        <div class="col-md-6 bg-success">
 
-        <!-- Post interaction -->
-        <div id="box2" class="bg-info m-5 p-5 rounded-5 shadow d-none">
-          <div class="row">
-            <div class="col-lg-10">
-              <h4>Awesome job! You're now a Cyber Kindness Explorer!</h4>
-              <p>You've learned how to stay safe, kind, and strong online. Every kind action you take makes the internet
-                a
-                better place for everyone!</p>
-              <p>Keep being awesome, online and offline!</p>
-            </div>
-            <div class="col-lg-2">
-              <img src="/img/chart_07.png" class="img-fluid">
-            </div>
-          </div>
         </div>
       </div>
     </div>
