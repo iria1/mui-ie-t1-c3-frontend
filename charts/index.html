@@ -86,9 +86,9 @@
           <div class="rounded-5 shadow p-4">
             <!-- visualization goes here -->
             <canvas id="barChart"></canvas>
-            <small class="text-muted fst-italic">Source: <a href="https://data.unicef.org/topic/child-protection/violence/bullying/" target="_blank">UNICEF</a></small>
+            <small class="text-muted fst-italic">Source: <a href="https://data.unicef.org/topic/child-protection/violence/bullying/" target="_blank" rel="noopener noreferrer">UNICEF</a></small>
             <div class="mt-3 d-flex justify-content-center align-items-center gap-2">
-              <label for="regionSelect" class="fw-bold mb-0">Select country:</label>
+              <label for="regionSelect" class="form-label fw-bold mb-0">Select country:</label>
               <select class="selectpicker" multiple id="regionSelect" title="Select country"></select>
             </div>
           </div>
@@ -101,12 +101,30 @@
       <h2>WORDS THAT HURT</h2>
       <div class="row">
         <!-- left -->
-        <div class="col-md-6 bg-warning">
-          <!-- visualization goes here -->
+        <div class="col-md-7">
+          <div class="rounded-5 shadow p-4">
+            <!-- visualization goes here -->
+            <div id="surroundingDiv" style="width:100%;height:400px;">
+              <canvas id="wordCloudCanvas"></canvas>
+            </div>
+            <small class="text-muted fst-italic">Source: <a href="https://www.kaggle.com/code/lizakonopelko/cyberbullying-on-twitter-visualization#Word-cloud" target="_blank" rel="noopener noreferrer">Cyberbullying on Twitter Visualization</a></small>
+            <div class="my-3 d-flex justify-content-center align-items-center gap-2">
+              <label for="wordCategorySelect" class="fw-bold mb-0">Harmful word category:</label>
+              <select id="wordCategorySelect" class="form-select w-auto" onchange="getWordCloud(this.value)">
+                <option value="nc" selected>Not Cool</option>
+                <option value="ng">No Go</option>
+              </select>
+            </div>
+            <div>
+              <p class="fw-bold mb-1">How You Can Respond:</p>
+              <p class="mb-1"><strong>Don't Reply with Anger:</strong> Take a deep breath and remember, hurtful words say more about the bully than about you.</p>
+              <p class="mb-0"><strong>Block and Report:</strong> Use the "block" or "report" button on the platform to stop the bully.</p>
+            </div>
+          </div>
         </div>
 
         <!-- right -->
-        <div class="col-md-6">
+        <div class="col-md-5 d-flex align-items-center">
           <div class="rounded-5 p-4 bg-info d-lg-flex align-items-center">
             <div class="me-3">
               <p>This word cloud shows some of the hurtful words people have used online. Even though words seem small, they can leave a big impact on others. Here, we learn the importance of kind communication and promise not to use harmful words that can hurt someone's feelings.</p>

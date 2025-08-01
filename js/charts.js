@@ -1,8 +1,14 @@
+// start with 3 countries pre-selected
+const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
+//const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
+
 let bullyStat = [];
 let chartInstance = null;
 
 $(document).ready(function () {
     getBullyStatRegionList();
+    getBullyStat();
+    getWordCloud();
 });
 
 //////////////
@@ -33,7 +39,8 @@ function getBullyStatRegionList() {
             // Important: refresh the Bootstrap Select UI
             select.selectpicker('refresh');
 
-            getBullyStat();
+            // change combo box selections
+            select.selectpicker('val', allRegions);
         },
         fail: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
@@ -54,15 +61,45 @@ function getBullyStat() {
             // everytime country selection changes
             bullyStat = response.data;
 
-            // start with 3 countries pre-selected
-            const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-            //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
-
-            // change combo box selections
-            $('#regionSelect').selectpicker('val', allRegions);
-
             // draw bar chart
             updateBarChart(allRegions);
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
+    });
+}
+
+function getWordCloud(label = "nc") {
+    // get word cloud data
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        method: 'GET',
+        data: {
+            label: label
+        },
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            // helps canvas stretch to appropriate size
+            let div = document.getElementById("surroundingDiv");
+
+            let canvas = document.getElementById("wordCloudCanvas");
+            canvas.height = div.offsetHeight;
+            canvas.width  = div.offsetWidth;
+
+            // draw wordcloud
+            WordCloud(canvas, {
+                list: response.data,
+                gridSize: 24,
+                weightFactor: 2.5,
+                fontFamily: 'Arial',
+                color: 'random-dark',
+                drawOutOfBound: false,
+                shrinkToFit: true,
+                rotationSteps: 2
+            });
         },
         fail: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
