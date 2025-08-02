@@ -56,8 +56,8 @@
     <!-- title -->
     <div>
       <h1 class="text-center">MISSION KINDNESS: EXPLORE THE DIGITAL WORLD WITH CARO!</h1>
-      <div class="rounded-5 p-4 bg-info d-sm-flex align-items-center">
-        <img src="/img/chart_01s.png">
+      <div class="rounded-5 shadow p-4 bg-info d-sm-flex align-items-center">
+        <img src="/img/caro_hello.png" width="200">
         <div class="ms-3">
           <p>Hi there! My name is Caro! I am your special agent at ChildCyberCare! Welcome to ChildCyberCare - your safe space to explore the digital world!</p>
           <p>I am here as your friendly guide who shows you how to be kind online, spot mean behavior, and protect yourself while having fun on the internet!</p>
@@ -72,8 +72,8 @@
       <div class="row">
         <!-- left -->
         <div class="col-md-5 d-flex align-items-center">
-          <div class="rounded-5 p-4 bg-info d-lg-flex align-items-center">
-            <img src="/img/chart_01s.png">
+          <div class="rounded-5 shadow p-4 w-100 bg-info d-lg-flex align-items-center">
+            <img src="/img/caro_read_book.png">
             <div class="ms-3">
               <p>This chart shows how kids in ASEAN countries are experiencing online bullying. By selecting a country and gender, you can see how big the problem is and understand that no one is alone in facing these challenges. It helps us learn from each other and find ways to stay safe online.</p>
               <p class="fw-bold">Mission: Be a global buddy - send a positive message to a friend today!</p>
@@ -82,8 +82,8 @@
         </div>
 
         <!-- right -->
-        <div class="col-md-7">
-          <div class="rounded-5 shadow p-4">
+        <div class="col-md-7 d-flex align-items-center">
+          <div class="rounded-5 shadow p-4 w-100">
             <!-- visualization goes here -->
             <canvas id="barChart"></canvas>
             <small class="text-muted fst-italic">Source: <a href="https://data.unicef.org/topic/child-protection/violence/bullying/" target="_blank" rel="noopener noreferrer">UNICEF</a></small>
@@ -101,8 +101,8 @@
       <h2>WORDS THAT HURT</h2>
       <div class="row">
         <!-- left -->
-        <div class="col-md-7">
-          <div class="rounded-5 shadow p-4">
+        <div class="col-md-7 d-flex align-items-center">
+          <div class="rounded-5 shadow p-4 w-100">
             <!-- visualization goes here -->
             <div id="surroundingDiv" style="width:100%;height:400px;">
               <canvas id="wordCloudCanvas"></canvas>
@@ -125,12 +125,12 @@
 
         <!-- right -->
         <div class="col-md-5 d-flex align-items-center">
-          <div class="rounded-5 p-4 bg-info d-lg-flex align-items-center">
+          <div class="rounded-5 shadow p-4 w-100 bg-info d-lg-flex align-items-center">
             <div class="me-3">
               <p>This word cloud shows some of the hurtful words people have used online. Even though words seem small, they can leave a big impact on others. Here, we learn the importance of kind communication and promise not to use harmful words that can hurt someone's feelings.</p>
               <p class="fw-bold">Mission: Type 3 kind words in your next chat - it can make someone's day!</p>
             </div>
-            <img src="/img/chart_01s.png">
+            <img src="/img/caro_red_mic.png" width="200">
           </div>
         </div>
       </div>
@@ -141,9 +141,9 @@
       <h2>SCREEN TIME AND STRESS</h2>
       <div class="row">
         <!-- left -->
-        <div class="col-md-6">
-          <div class="rounded-5 p-4 bg-info d-lg-flex align-items-center">
-            <img src="/img/chart_01s.png">
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="rounded-5 shadow p-4 w-100 bg-info d-lg-flex align-items-center">
+            <img src="/img/caro_heart.png" width="200">
             <div class="ms-3">
               <p>This scatter plot shows how screen time can affect our mood and stress levels. When we spend too much time on screens, our brains can feel tired and stressed - the more red dots, the higher the stress! This visualization reminds us to take breaks and enjoy life offline too.</p>
               <p class="fw-bold">Mission: Every hour, do a 2-minute “screen shake” - dance or stretch!</p>
@@ -152,7 +152,7 @@
         </div>
 
         <!-- right -->
-        <div class="col-md-6 bg-success">
+        <div class="col-md-6 d-flex align-items-center bg-success">
           <!-- visualization goes here -->
         </div>
       </div>
@@ -161,7 +161,7 @@
     <!-- user feedback -->
     <div class="mt-3">
       <h2>WHAT DID YOU LEARN TODAY?</h2>
-      <div id="box1" class="rounded-5 p-4 bg-info d-flex align-items-center justify-content-between">
+      <div id="box1" class="rounded-5 shadow p-4 bg-info d-flex align-items-center justify-content-between">
         <div>
           <p>Great job exploring! Before you go, take a moment to think: What's one kind thing you can do online today?</p>
           <div class="form-check form-check-lg mb-4">
@@ -174,17 +174,17 @@
           </div>
           <button id="btnResp" class="btn btn-secondary" onclick="switchBox()" disabled>I promise!</button>
         </div>
-        <img src="/img/chart_01s.png">
+        <img id="caroFinish" src="/img/caro_finish.png" width="200">
       </div>
 
-      <div id="box2" class="rounded-5 p-4 bg-info d-flex align-items-center justify-content-between d-none">
+      <div id="box2" class="rounded-5 shadow p-4 bg-info d-flex align-items-center justify-content-between d-none">
         <div>
           <h4>MISSION ACCOMPLISHED!</h4>
           <p>Awesome job! You're now a Cyber Kindness Explorer!</p>
           <p>You've learned how to stay safe, kind, and strong online. Every kind action you take makes the internet a better place for everyone!</p>
           <p>Keep being awesome, online and offline!</p>
         </div>
-        <img src="/img/chart_01s.png">
+        <img id="caroChamp" src="/img/caro_champ.png">
       </div>
     </div>
   </div>

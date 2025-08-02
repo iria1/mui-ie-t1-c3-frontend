@@ -1,6 +1,5 @@
 // start with 3 countries pre-selected
 const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-//const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
 
 let bullyStat = [];
 let chartInstance = null;
@@ -189,6 +188,12 @@ function switchBox() {
 
     box1.classList.add('d-none');
     box2.classList.remove('d-none');
+
+    // resize images as required
+    const caroFinish = $('#caroFinish');
+    const caroChamp = $('#caroChamp');
+
+    caroChamp.prop('height', caroFinish.prop('height'));
 }
 
 function checkCheckboxStatus() {
