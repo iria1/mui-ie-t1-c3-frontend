@@ -1,30 +1,40 @@
 const input = document.getElementById('passwordInput');
 
 async function login() {
+    // change button with spinner
+    const btnLogin = document.getElementById('btnLogin');
+    btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+    btnLogin.disabled = true;
+
     const password = input.value;
+
+    // empty error message
     const errorMessage = document.getElementById('errorMessage');
+    errorMessage.innerHTML = '';
 
-    try {
-        const response = await fetch(`${endpointRoot}/v1/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password })
-        });
+    $.ajax({
+        url: `${endpointRoot}/v1/auth/login`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ password: password }),
+        success: function (response) {
+            localStorage.setItem('jwt_token', response.token);
+            window.location.href = '/';
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // revert button to original
+            btnLogin.innerHTML = 'Login';
+            btnLogin.disabled = false;
 
-        if (!response.ok) {
-            throw new Error('Login failed');
+            if (jqXHR.status == 401) {
+                errorMessage.innerHTML = 'Incorrect password';
+            } else {
+                errorMessage.innerHTML = 'Unexpected error';
+            }
+            
+            console.error('Error:', errorThrown);
         }
-
-        const data = await response.json();
-        localStorage.setItem('jwt_token', data.token);
-        errorMessage.classList.add('d-none');
-        window.location.href = '/';
-    } catch (err) {
-        errorMessage.classList.remove('d-none');
-        console.error(err);
-    }
+    });
 }
 
 input.addEventListener('keypress', function (event) {
