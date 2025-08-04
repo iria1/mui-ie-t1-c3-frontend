@@ -2,12 +2,16 @@
 const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
 
 let bullyStat = [];
+let socmedUsage = [];
+
 let chartInstance = null;
+let scatterChart = null;
 
 $(document).ready(function () {
     getBullyStatRegionList();
     getBullyStat();
     getWordCloud();
+    getSocmedUsage();
 });
 
 //////////////
@@ -106,6 +110,25 @@ function getWordCloud(label = "nc") {
     });
 }
 
+function getSocmedUsage() {
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_socmed_usage`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            socmedUsage = response.data;
+
+            // draw scatter plot
+            drawScatterPlot('socmed');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
+    });
+}
+
 ///////////////////
 // Event handler //
 ///////////////////
@@ -175,6 +198,78 @@ function updateBarChart(selectedRegions) {
             }
         });
     }
+}
+
+function drawScatterPlot(name) {
+    let xAxisLabel = '';
+    if (name == 'socmed') {
+        xAxisLabel = 'Average Daily Social Media Usage (Hours)';
+    } else if (name == 'sleep') {
+        xAxisLabel = 'Sleep Hours per Night';
+    }
+
+    const xValues = socmedUsage.map(d => d['x_' + name]);
+    const yValues = socmedUsage.map(d => d.y);
+
+    const xMin = Math.ceil(Math.min(...xValues) - 1);
+    const xMax = Math.floor(Math.max(...xValues) + 1);
+    const yMin = Math.ceil(Math.min(...yValues) - 1);
+    const yMax = Math.floor(Math.max(...yValues) + 1);
+
+    const points = socmedUsage.map(item => ({
+        x: item['x_' + name],
+        y: item.y,
+        backgroundColor: 'rgba(255, 0, 0, 1)',
+        radius: 6
+    }));
+
+    let ctx = document.getElementById('scatterChart').getContext('2d');
+
+    if (scatterChart != null) {
+        scatterChart.destroy();
+    }
+
+    scatterChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Mental Health Score',
+                data: points,
+                parsing: false,
+                showLine: false,
+                pointBackgroundColor: points.map(p => p.backgroundColor),
+                pointRadius: points.map(p => p.radius)
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    min: xMin,
+                    max: xMax,
+                    title: {
+                        display: true,
+                        text: xAxisLabel
+                    }
+                },
+                y: {
+                    min: yMin,
+                    max: yMax,
+                    title: {
+                        display: true,
+                        text: 'Mental Health Score'
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    enabled: false
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
 }
 
 // change box content when button is pressed
