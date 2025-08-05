@@ -3,6 +3,8 @@ const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
 
 let bullyStat = [];
 let socmedUsage = [];
+let wordCloudNC = [];
+let wordCloudNG = [];
 
 let chartInstance = null;
 let scatterChart = null;
@@ -73,36 +75,38 @@ function getBullyStat() {
     });
 }
 
-function getWordCloud(label = "nc") {
+function getWordCloud() {
     // get word cloud data
     $.ajax({
         url: `${endpointRoot}/v2/charts/get_word_cloud`,
         method: 'GET',
         data: {
-            label: label
+            label: 'nc'
         },
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
         },
         success: function (response) {
-            // helps canvas stretch to appropriate size
-            let div = document.getElementById("surroundingDiv");
+            wordCloudNC = response.data;
 
-            let canvas = document.getElementById("wordCloudCanvas");
-            canvas.height = div.offsetHeight;
-            canvas.width  = div.offsetWidth;
+            wordCloudChangeSelection('nc');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
+    });
 
-            // draw wordcloud
-            WordCloud(canvas, {
-                list: response.data,
-                gridSize: 24,
-                weightFactor: 2.5,
-                fontFamily: 'Arial',
-                color: 'random-dark',
-                drawOutOfBound: false,
-                shrinkToFit: true,
-                rotationSteps: 2
-            });
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        method: 'GET',
+        data: {
+            label: 'ng'
+        },
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            wordCloudNG = response.data;
         },
         fail: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
@@ -269,6 +273,45 @@ function drawScatterPlot(name) {
                 }
             }
         }
+    });
+}
+
+function wordCloudChangeSelection(label) {
+    const wcNarrationNotCool = document.getElementById('wcNarrationNotCool');
+    const wcNarrationNoGo = document.getElementById('wcNarrationNoGo');
+
+    // Hide all
+    wcNarrationNotCool.classList.add('d-none');
+    wcNarrationNoGo.classList.add('d-none');
+
+    let wcData = null;
+
+    // Show selected
+    if (label == 'nc') {
+        wcData = wordCloudNC;
+        wcNarrationNotCool.classList.remove('d-none');
+    } else if (label == 'ng') {
+        wcData = wordCloudNG;
+        wcNarrationNoGo.classList.remove('d-none');
+    }
+
+    // helps canvas stretch to appropriate size
+    let div = document.getElementById("surroundingDiv");
+
+    let canvas = document.getElementById("wordCloudCanvas");
+    canvas.height = div.offsetHeight;
+    canvas.width = div.offsetWidth;
+
+    // draw wordcloud
+    WordCloud(canvas, {
+        list: wcData,
+        gridSize: 24,
+        weightFactor: 2.5,
+        fontFamily: 'Arial',
+        color: 'random-dark',
+        drawOutOfBound: false,
+        shrinkToFit: true,
+        rotationSteps: 2
     });
 }
 

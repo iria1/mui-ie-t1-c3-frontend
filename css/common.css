@@ -9,7 +9,7 @@ body {
     background: #d8d9da;
 }
 
-p {
+p, ul {
     font-family: 'League Spartan', sans-serif;
 }
 

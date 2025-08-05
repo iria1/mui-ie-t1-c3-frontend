@@ -72,7 +72,7 @@
           <div class="rounded-5 shadow p-4 w-100 text-bubble d-lg-flex align-items-center">
             <img src="/img/caro_read_book.png">
             <div class="ms-3">
-              <p>This chart shows how kids in ASEAN countries are experiencing online bullying. By selecting a country and gender, you can see how big the problem is and understand that no one is alone in facing these challenges. It helps us learn from each other and find ways to stay safe online.</p>
+              <p>This chart shows how kids in ASEAN countries are experiencing online bullying. By selecting a country, you can see how big the problem is and understand that no one is alone in facing these challenges. It helps us learn from each other and find ways to stay safe online.</p>
               <p class="fw-bold">Mission: Be a global buddy - send a positive message to a friend today!</p>
             </div>
           </div>
@@ -107,15 +107,29 @@
             <small class="text-muted fst-italic">Source: <a href="https://www.kaggle.com/code/lizakonopelko/cyberbullying-on-twitter-visualization#Word-cloud" target="_blank" rel="noopener noreferrer">Cyberbullying on Twitter Visualization</a></small>
             <div class="my-3 d-flex justify-content-center align-items-center gap-2">
               <label for="wordCategorySelect" class="fw-bold mb-0">Harmful word category:</label>
-              <select id="wordCategorySelect" class="form-select w-auto" onchange="getWordCloud(this.value)">
+              <select id="wordCategorySelect" class="form-select w-auto" onchange="wordCloudChangeSelection(this.value)">
                 <option value="nc" selected>Not Cool</option>
                 <option value="ng">No Go</option>
               </select>
             </div>
-            <div>
-              <p class="fw-bold mb-1">How You Can Respond:</p>
-              <p class="mb-1"><strong>Don't Reply with Anger:</strong> Take a deep breath and remember, hurtful words say more about the bully than about you.</p>
-              <p class="mb-0"><strong>Block and Report:</strong> Use the "block" or "report" button on the platform to stop the bully.</p>
+
+            <div id="wcNarrationNotCool" class="d-none">
+              <p class="mb-1">Hey 👋 These are words you might hear in chats or games, but they're still hurtful.</p>
+              <p class="mb-1">Words like suck, cunt, or moron can make people feel bad, even if you're joking.</p>
+              <p class="mb-1">You have the power to change that 💪.</p>
+              <p class="mb-1">Try saying what you feel without insults, or take a moment to cool off before replying.</p>
+              <p class="mb-0">Every time you choose kind words, you make the chat safer and show you're against bullying. 💛</p>
+            </div>
+
+            <div id="wcNarrationNoGo" class="d-none">
+              <p class="mb-1">These are the super hurtful words 🚫. They can really hurt people, make them feel unsafe, and even spread hate.</p>
+              <p class="mb-1">If you see them:</p>
+              <ul class="list-unstyled mb-1">
+                <li>1️⃣ Don't join in.</li>
+                <li>2️⃣ Report it.</li>
+                <li>3️⃣ Tell a trusted adult or teacher.</li>
+              </ul>
+              <p class="mb-0">Standing up against these words means you're protecting others and making your space kinder. 🌟 You're not just avoiding bullying, you're stopping it.</p>
             </div>
           </div>
         </div>
