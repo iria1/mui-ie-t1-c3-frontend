@@ -25,12 +25,13 @@
   <div class="container d-flex justify-content-center align-items-center centered-box">
     <div class="card shadow p-4 rounded-4" style="min-width: 300px;">
       <h5 class="text-center mb-3">Enter Password</h5>
-      <input type="password" id="passwordInput" class="form-control mb-3" placeholder="Password"/>
-      <button class="btn btn-primary w-100" onclick="login()">Login</button>
-      <div id="errorMessage" class="text-danger mt-2 d-none">Login failed</div>
+      <input type="password" id="passwordInput" class="form-control mb-1" placeholder="Password"/>
+      <div id="errorMessage" class="text-danger mb-1" style="min-height: 24px;"></div>
+      <button id="btnLogin" class="btn btn-primary w-100" onclick="login()">Login</button>
     </div>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="/js/login.js"></script>
 </body>
 </html>

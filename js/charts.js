@@ -1,47 +1,26 @@
-var bullyStat = [];
-var socmedUsage = [];
-var chartInstance = null;
-var cMin = 0;
-var cMax = 0;
+// start with 3 countries pre-selected
+const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
 
-var scatterChart = null;
+let bullyStat = [];
+let socmedUsage = [];
+let wordCloudNC = [];
+let wordCloudNG = [];
+
+let chartInstance = null;
+let scatterChart = null;
 
 $(document).ready(function () {
-    getWordCloud();
+    getBullyStatRegionList();
     getBullyStat();
+    getWordCloud();
     getSocmedUsage();
 });
 
-function getWordCloud(label = "nc") {
-    // get word cloud data
-    $.ajax({
-        url: `${endpointRoot}/v2/charts/get_word_cloud`,
-        method: 'GET',
-        data: {
-            label: label
-        },
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
-        },
-        success: function (wordList) {
-            $('#wordCloudCanvas').show();
+//////////////
+// API call //
+//////////////
 
-            // draw wordcloud
-            WordCloud(document.getElementById('wordCloudCanvas'), {
-                list: wordList.data,
-                gridSize: 24,
-                weightFactor: 3,
-                fontFamily: 'Arial',
-                color: 'random-dark',
-            });
-        },
-        fail: function (jqXHR, textStatus, errorThrown) {
-            console.error('Error:', errorThrown);
-        }
-    });
-}
-
-function getBullyStat() {
+function getBullyStatRegionList() {
     // get list of countries for combo box
     $.ajax({
         url: `${endpointRoot}/v2/charts/get_bully_stat_region_list`,
@@ -50,9 +29,8 @@ function getBullyStat() {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
         },
         success: function (response) {
+            const data = response.data;
             const select = $('#regionSelect');
-
-            var data = response.data;
 
             // add combobox options using queried data
             data.forEach(region => {
@@ -65,12 +43,17 @@ function getBullyStat() {
 
             // Important: refresh the Bootstrap Select UI
             select.selectpicker('refresh');
+
+            // change combo box selections
+            select.selectpicker('val', allRegions);
         },
         fail: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
         }
     });
+}
 
+function getBullyStat() {
     // get bullying statistics data for bar chart
     $.ajax({
         url: `${endpointRoot}/v2/charts/get_bully_stat`,
@@ -83,13 +66,6 @@ function getBullyStat() {
             // everytime country selection changes
             bullyStat = response.data;
 
-            // start with 3 countries pre-selected
-            const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
-            //const allRegions = [...new Set(bullyStat.map(d => d.country))]; // alternative for all countries selected
-
-            // change combo box selections
-            $('#regionSelect').selectpicker('val', allRegions);
-
             // draw bar chart
             updateBarChart(allRegions);
         },
@@ -99,8 +75,46 @@ function getBullyStat() {
     });
 }
 
+function getWordCloud() {
+    // get word cloud data
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        method: 'GET',
+        data: {
+            label: 'nc'
+        },
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            wordCloudNC = response.data;
+
+            wordCloudChangeSelection('nc');
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
+    });
+
+    $.ajax({
+        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        method: 'GET',
+        data: {
+            label: 'ng'
+        },
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (response) {
+            wordCloudNG = response.data;
+        },
+        fail: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        }
+    });
+}
+
 function getSocmedUsage() {
-    // get social media usage data for scatter plot
     $.ajax({
         url: `${endpointRoot}/v2/charts/get_socmed_usage`,
         method: 'GET',
@@ -110,14 +124,28 @@ function getSocmedUsage() {
         success: function (response) {
             socmedUsage = response.data;
 
-        // draw scatter plot
-        drawScatterPlot_v2('socmed');
+            // draw scatter plot
+            drawScatterPlot('socmed');
         },
         fail: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
         }
     });
 }
+
+///////////////////
+// Event handler //
+///////////////////
+
+// update bar chart when combo box values change
+$('#regionSelect').on('changed.bs.select', function () {
+    const selectedRegions = $(this).val(); // Array of selected values
+    updateBarChart(selectedRegions);
+});
+
+/////////////////////
+// Helper function //
+/////////////////////
 
 function updateBarChart(selectedRegions) {
     // filter data by selected countries
@@ -176,54 +204,8 @@ function updateBarChart(selectedRegions) {
     }
 }
 
-function getColorFromValue(value, min, max) {
-    // Clamp value to expected range
-    const clamped = Math.max(min, Math.min(max, value));
-
-    // Normalize to [0, 1], where 0 = red, 1 = white
-    const t = (clamped - min) / (max - min);
-
-    // Interpolate: red stays at 255, green and blue go from 0 to 255
-    const r = 255;
-    const g = Math.round(255 * t);
-    const b = Math.round(255 * t);
-
-    return `rgb(${r}, ${g}, ${b})`;
-}
-
-// change box content when button is pressed
-function switchBox() {
-    const box1 = document.getElementById('box1');
-    const box2 = document.getElementById('box2');
-
-    // Copy height from box1 to box2
-    box2.style.minHeight = box1.offsetHeight + 'px';
-    box2.style.maxHeight = box1.offsetHeight + 'px';
-
-    box1.classList.add('d-none');
-    box2.classList.remove('d-none');
-}
-
-// update bar chart when combo box values change
-$('#regionSelect').on('changed.bs.select', function () {
-    const selectedRegions = $(this).val(); // Array of selected values
-    updateBarChart(selectedRegions);
-});
-
-function checkCheckboxStatus() {
-    if ($('#resp1').prop('checked') && $('#resp2').prop('checked') && $('#resp3').prop('checked')) {
-        $('#btnResp').prop("disabled", false);
-    } else {
-        $('#btnResp').prop("disabled", true);
-    }
-}
-
-function handleTabClick(name) {
-    drawScatterPlot_v2(name);
-}
-
-function drawScatterPlot_v2(name) {
-    var xAxisLabel = '';
+function drawScatterPlot(name) {
+    let xAxisLabel = '';
     if (name == 'socmed') {
         xAxisLabel = 'Average Daily Social Media Usage (Hours)';
     } else if (name == 'sleep') {
@@ -245,7 +227,7 @@ function drawScatterPlot_v2(name) {
         radius: 6
     }));
 
-    var ctx = document.getElementById('scatterChart').getContext('2d');
+    let ctx = document.getElementById('scatterChart').getContext('2d');
 
     if (scatterChart != null) {
         scatterChart.destroy();
@@ -292,4 +274,70 @@ function drawScatterPlot_v2(name) {
             }
         }
     });
+}
+
+function wordCloudChangeSelection(label) {
+    const wcNarrationNotCool = document.getElementById('wcNarrationNotCool');
+    const wcNarrationNoGo = document.getElementById('wcNarrationNoGo');
+
+    // Hide all
+    wcNarrationNotCool.classList.add('d-none');
+    wcNarrationNoGo.classList.add('d-none');
+
+    let wcData = null;
+
+    // Show selected
+    if (label == 'nc') {
+        wcData = wordCloudNC;
+        wcNarrationNotCool.classList.remove('d-none');
+    } else if (label == 'ng') {
+        wcData = wordCloudNG;
+        wcNarrationNoGo.classList.remove('d-none');
+    }
+
+    // helps canvas stretch to appropriate size
+    let div = document.getElementById("surroundingDiv");
+
+    let canvas = document.getElementById("wordCloudCanvas");
+    canvas.height = div.offsetHeight;
+    canvas.width = div.offsetWidth;
+
+    // draw wordcloud
+    WordCloud(canvas, {
+        list: wcData,
+        gridSize: 24,
+        weightFactor: 2.5,
+        fontFamily: 'Arial',
+        color: 'random-dark',
+        drawOutOfBound: false,
+        shrinkToFit: true,
+        rotationSteps: 2
+    });
+}
+
+// change box content when button is pressed
+function switchBox() {
+    const box1 = document.getElementById('box1');
+    const box2 = document.getElementById('box2');
+
+    // Copy height from box1 to box2
+    box2.style.minHeight = box1.offsetHeight + 'px';
+    box2.style.maxHeight = box1.offsetHeight + 'px';
+
+    box1.classList.add('d-none');
+    box2.classList.remove('d-none');
+
+    // resize images as required
+    const caroFinish = $('#caroFinish');
+    const caroChamp = $('#caroChamp');
+
+    caroChamp.prop('height', caroFinish.prop('height'));
+}
+
+function checkCheckboxStatus() {
+    if ($('#resp1').prop('checked') && $('#resp2').prop('checked') && $('#resp3').prop('checked')) {
+        $('#btnResp').prop("disabled", false);
+    } else {
+        $('#btnResp').prop("disabled", true);
+    }
 }
