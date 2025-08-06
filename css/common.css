@@ -5,7 +5,7 @@
          url('/fonts/Squartiqa4F.ttf') format('truetype');
 }
 
-body {
+body, .modal-body, .modal-footer {
     background: #d8d9da;
 }
 
@@ -15,4 +15,8 @@ p, ul {
 
 h1, h2 {
     font-family: 'Squartiqa4F', sans-serif;
+}
+
+.text-bubble {
+    background-color: #a8e4e7
 }

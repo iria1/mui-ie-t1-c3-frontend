@@ -1,11 +1,23 @@
 const input = document.getElementById('userInput');
 
-input.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // Stop default form submission if inside a form
-        sendMessage();
+$(document).ready(function () {
+    const hasVisited = localStorage.getItem("hasVisitedBefore");
+
+    if (!hasVisited) {
+        // Show the modal using Bootstrap 5
+        const myModal = new bootstrap.Modal(document.getElementById('modalChatbotInfo'));
+        myModal.show();
+
+        // Mark as visited
+        localStorage.setItem("hasVisitedBefore", "true");
     }
+
+    addBubble("Hello, I'm Caro! Ask me anything about cyberbullying!", 'bot');
 });
+
+//////////////
+// API call //
+//////////////
 
 async function sendMessage() {
     const message = input.value.trim();
@@ -36,6 +48,21 @@ async function sendMessage() {
         }
     });
 }
+
+///////////////////
+// Event handler //
+///////////////////
+
+input.addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Stop default form submission if inside a form
+        sendMessage();
+    }
+});
+
+/////////////////////
+// Helper function //
+/////////////////////
 
 function addBubble(text, type) {
     const chat = document.getElementById('chatWindow');
