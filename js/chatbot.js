@@ -1,4 +1,5 @@
 const input = document.getElementById('userInput');
+const btnSend = document.getElementById('btnSend');
 
 $(document).ready(function () {
     const hasVisited = localStorage.getItem("hasVisitedBefore");
@@ -20,6 +21,9 @@ $(document).ready(function () {
 //////////////
 
 async function sendMessage() {
+    btnSend.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+    btnSend.disabled = true;
+
     const message = input.value.trim();
     if (message === '') return;
 
@@ -45,6 +49,10 @@ async function sendMessage() {
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
             addBubble('[Error contacting server]', 'bot');
+        },
+        complete: function (data) {
+            btnSend.innerHTML = 'Send';
+            btnSend.disabled = false;
         }
     });
 }
@@ -54,7 +62,7 @@ async function sendMessage() {
 ///////////////////
 
 input.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !btnSend.disabled) {
         event.preventDefault(); // Stop default form submission if inside a form
         sendMessage();
     }

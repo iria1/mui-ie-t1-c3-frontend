@@ -1,8 +1,8 @@
 const input = document.getElementById('passwordInput');
+const btnLogin = document.getElementById('btnLogin');
 
 async function login() {
     // change button with spinner
-    const btnLogin = document.getElementById('btnLogin');
     btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
     btnLogin.disabled = true;
 
@@ -38,7 +38,7 @@ async function login() {
 }
 
 input.addEventListener('keypress', function (event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !btnLogin.disabled) {
         event.preventDefault(); // Stop default form submission if inside a form
         login();
     }
