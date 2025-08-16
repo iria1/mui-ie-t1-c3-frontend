@@ -1,7 +1,11 @@
 const input = document.getElementById('userInput');
 const btnSend = document.getElementById('btnSend');
+const chatWindow = document.getElementById('chatWindow');
 
 $(document).ready(function () {
+    // adjust chat window height to ensure everything fits with no need for scrolling
+    chatWindow.style.height = (window.innerHeight - 200) + 'px';
+
     const hasVisited = localStorage.getItem("hasVisitedBefore");
 
     if (!hasVisited) {
