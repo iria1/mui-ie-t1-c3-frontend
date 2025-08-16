@@ -25,11 +25,11 @@ $(document).ready(function () {
 //////////////
 
 async function sendMessage() {
-    btnSend.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-    btnSend.disabled = true;
-
     const message = input.value.trim();
     if (message === '') return;
+
+    btnSend.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+    btnSend.disabled = true;
 
     // Add user bubble
     addBubble(message, 'user');
