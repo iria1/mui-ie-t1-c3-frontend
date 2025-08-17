@@ -24,3 +24,7 @@
     color: #fff;
     margin-right: auto; /* push left */
 }
+
+.chat-bubble p {
+    margin-block-end: 0px;
+}

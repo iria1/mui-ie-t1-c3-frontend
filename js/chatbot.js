@@ -1,6 +1,7 @@
 const input = document.getElementById('userInput');
 const btnSend = document.getElementById('btnSend');
 const chatWindow = document.getElementById('chatWindow');
+const converter = new showdown.Converter();
 
 $(document).ready(function () {
     // adjust chat window height to ensure everything fits with no need for scrolling
@@ -80,7 +81,10 @@ function addBubble(text, type) {
     const chat = document.getElementById('chatWindow');
     const bubble = document.createElement('div');
     bubble.className = `chat-bubble shadow mb-3 ${type}`;
-    bubble.innerText = text;
+
+    let mdTextInHtml = converter.makeHtml(text);
+    bubble.innerHTML = mdTextInHtml;
+
     chat.appendChild(bubble);
 
     // Auto scroll to bottom
