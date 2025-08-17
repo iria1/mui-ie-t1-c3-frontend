@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <base href="/archive2/">
+
+  <script src="/js/config.js"></script>
+  <script src="/js/auth.js"></script>
+  <link href="/css/auth.css" rel="stylesheet">
+
+  <title>Chatbot - ChildCyberCare</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/x-icon" href="img/logo_c3.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan&display=swap" rel="stylesheet">
+  
+  <link href="css/common.css" rel="stylesheet">
+  <link href="css/chatbot.css" rel="stylesheet">
+</head>
+
+<body class="hidden">
+  <nav class="navbar sticky-top navbar-expand-sm bg-light navbar-light">
+    <div class="container-fluid">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="navbar-brand" href=".">
+            <img src="img/logo_c3.png" class="img-fluid rounded-circle" style="max-height: 40px; object-fit: contain;">
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=".">ChildCyberCare</a>
+        </li>
+      </ul>
+      <!-- Right-side nav -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="charts/">Charts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="message_analyzer/">Message Analyzer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="chatbot/">Chatbot</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-3">
+        <div class="text-wrap" style="width:200px;">
+          <img src="img/caro_hello.png" width="200" data-bs-toggle="modal" data-bs-target="#modalChatbotInfo">
+          <p>Click me for information about Caro the Chatbot!</p>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <div id="chatWindow" class="border rounded p-3 mb-3" style="overflow-y: auto;">
+          <!-- Chat bubbles will appear here -->
+        </div>
+        <div class="input-group">
+          <input type="text" id="userInput" class="form-control" placeholder="Ask me anything about cyberbullying!">
+          <button id="btnSend" class="btn btn-primary" onclick="sendMessage()" style="width:75px;">Send</button>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="d-flex align-items-end justify-content-center" style="height:100%">
+          <img src="img/caro_ask_me.png" width="300">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- The Modal -->
+  <div class="modal fade" id="modalChatbotInfo" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div>
+              <h1>HI THERE! I'M CARO - YOUR CYBERBULLY-BUSTING BUDDY!</h1>
+              <div class="rounded-5 shadow p-4 text-bubble d-flex align-items-center justify-content-between">
+                <div class="ms-3">
+                  <p>Hey friend!</p>
+                  <p>Welcome to Mission Chat Time with me, Caro the Chatbot!</p>
+                  <p>I'm here just for YOU - to help you talk about anything scary, confusing, or mean that happens online</p>
+                  <p>I'm your robot buddy who always listens, gives kind advice, and helps you feel better</p>
+                </div>
+                <img src="img/caro_pencil.png" width="200">
+              </div>
+            </div>
+            <div class="mt-3">
+              <div class="row">
+                <div class="col-md-4 d-flex align-self-stretch">
+                  <div class="bg-light rounded-5 shadow p-4 w-100">
+                    <div class="mb-3 d-flex justify-content-center align-items-center">
+                      <img src="img/no_1_blue.png">
+                    </div>
+                    <p>Type your question in the chat box.</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <img src="img/chatbox.png">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 d-flex align-self-stretch">
+                  <div class="bg-light rounded-5 shadow p-4 w-100">
+                    <div class="mb-3 d-flex justify-content-center align-items-center">
+                      <img src="img/no_2_blue.png">
+                    </div>
+                    <p>I'll reply with helpful advice, ideas, or tips about cyberbullying.</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <img src="img/caro_open_hand.png">  
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 d-flex align-self-stretch">
+                  <div class="bg-light rounded-5 shadow p-4 w-100">
+                    <div class="mb-3 d-flex justify-content-center align-items-center">
+                      <img src="img/no_3_blue.png">
+                    </div>
+                    <p>You can ask me stuff anytime and as many times as you want!</p>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <img src="img/kid_bulb.png">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 d-flex align-items-center justify-content-between">
+              <div>
+                <p>Not sure what to ask? Try one of these:</p>
+                <ul class="list">
+                  <li>"Someone sent a mean message what should I do?"</li>
+                  <li>"How do I know if I'm being cyberbullied?"</li>
+                  <li>"What can I say to help a friend who's being bullied online?"</li>
+                </ul>
+                <p>By the way, I only talk about cyberbullying (that's my special mission!)</p>
+              </div>
+                <img src="img/caro_heart.png">
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">START CHAT WITH CARO!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/chatbot.js"></script>
+
+</html>

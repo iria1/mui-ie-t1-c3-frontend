@@ -1,0 +1,7 @@
+.card-hover {
+  transition: transform 0.3s ease; /* Smooth animation */
+}
+
+.card-hover:hover {
+  transform: scale(1.03); /* Grow 3% bigger on hover */
+}
