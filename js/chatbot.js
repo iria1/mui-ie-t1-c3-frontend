@@ -1,7 +1,16 @@
 const input = document.getElementById('userInput');
 const btnSend = document.getElementById('btnSend');
 const chatWindow = document.getElementById('chatWindow');
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({
+    noHeaderId: true,
+    simplifiedAutoLink: true,
+    strikethrough: true,
+    tables: true,
+    tasklists: true,
+    ghCompatibleHeaderId: true,
+    openLinksInNewWindow: true,
+    disableForced4SpacesIndentedSublists: true
+});
 
 $(document).ready(function () {
     // adjust chat window height to ensure everything fits with no need for scrolling
@@ -83,7 +92,8 @@ function addBubble(text, type) {
     bubble.className = `chat-bubble shadow mb-3 ${type}`;
 
     let mdTextInHtml = converter.makeHtml(text);
-    bubble.innerHTML = mdTextInHtml;
+    let cleanHtml = DOMPurify.sanitize(mdTextInHtml, { ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p'] });
+    bubble.innerHTML = cleanHtml;
 
     chat.appendChild(bubble);
 
