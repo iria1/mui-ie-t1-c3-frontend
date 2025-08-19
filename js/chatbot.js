@@ -1,3 +1,5 @@
+let chatbotSessionToken = null;
+
 const input = document.getElementById('userInput');
 const btnSend = document.getElementById('btnSend');
 const chatWindow = document.getElementById('chatWindow');
@@ -27,7 +29,14 @@ $(document).ready(function () {
         localStorage.setItem("hasVisitedBefore", "true");
     }
 
+    chatbotSessionToken = sessionStorage.getItem('chatbot_session_token');
+    if (!chatbotSessionToken) {
+        getChatbotSessionToken();
+    }
+
     addBubble("Hello, I'm Caro! Ask me anything about cyberbullying!", 'bot');
+
+    restoreMessages();
 });
 
 //////////////
@@ -55,10 +64,16 @@ async function sendMessage() {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
         },
-        data: JSON.stringify({ message: message }),
+        data: JSON.stringify({ 
+            message: message,
+            token: chatbotSessionToken
+        }),
         success: function (data) {
             const reply = data.data.response || '[No response]';
             addBubble(reply, 'bot');
+
+            saveMessage(message, 'user');
+            saveMessage(reply, 'bot');
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
@@ -67,6 +82,26 @@ async function sendMessage() {
         complete: function (data) {
             btnSend.innerHTML = 'Send';
             btnSend.disabled = false;
+        }
+    });
+}
+
+async function getChatbotSessionToken() {
+    $.ajax({
+        url: `${endpointRoot}/v1/chatbot/get_session_token`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (data) {
+            const token = data.data.token;
+
+            sessionStorage.setItem('chatbot_session_token', token);
+
+            chatbotSessionToken = token;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
         }
     });
 }
@@ -99,4 +134,15 @@ function addBubble(text, type) {
 
     // Auto scroll to bottom
     chat.scrollTop = chat.scrollHeight;
+}
+
+function saveMessage(text, type) {
+    const savedMessages = JSON.parse(sessionStorage.getItem('chatHistory')) || [];
+    savedMessages.push({ text, type });
+    sessionStorage.setItem('chatHistory', JSON.stringify(savedMessages));
+}
+
+function restoreMessages() {
+    const savedMessages = JSON.parse(sessionStorage.getItem('chatHistory')) || [];
+    savedMessages.forEach(msg => addBubble(msg.text, msg.type)); 
 }
