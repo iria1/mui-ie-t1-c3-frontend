@@ -13,7 +13,7 @@ $(document).ready(function () {
 function getWordCloud() {
     // get word cloud data
     $.ajax({
-        url: `${endpointRoot}/v1/charts/get_word_cloud`,
+        url: `${window.location.origin}/api/v1/charts/get_word_cloud`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -39,7 +39,7 @@ function getWordCloud() {
 function getBullyStat() {
     // get list of countries for combo box
     $.ajax({
-        url: `${endpointRoot}/v1/charts/get_bully_stat_region_list`,
+        url: `${window.location.origin}/api/v1/charts/get_bully_stat_region_list`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -68,7 +68,7 @@ function getBullyStat() {
 
     // get bullying statistics data for bar chart
     $.ajax({
-        url: `${endpointRoot}/v1/charts/get_bully_stat`,
+        url: `${window.location.origin}/api/v1/charts/get_bully_stat`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -97,7 +97,7 @@ function getBullyStat() {
 function getSocmedUsage() {
     // get social media usage data for scatter plot
     $.ajax({
-        url: `${endpointRoot}/v1/charts/get_socmed_usage`,
+        url: `${window.location.origin}/api/v1/charts/get_socmed_usage`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
