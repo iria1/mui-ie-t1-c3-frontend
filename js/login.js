@@ -13,7 +13,7 @@ async function login() {
     errorMessage.innerHTML = '';
 
     $.ajax({
-        url: `${endpointRoot}/v1/auth/login`,
+        url: `${window.location.origin}/api/v1/auth/login`,
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ password: password }),

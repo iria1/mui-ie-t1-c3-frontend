@@ -49,7 +49,7 @@ async function sendMessage() {
 
     // Send to backend
     $.ajax({
-        url: `${endpointRoot}/v1/chatbot/get_response_from_chatbot`,
+        url: `${window.location.origin}/api/v1/chatbot/get_response_from_chatbot`,
         method: 'POST',
         contentType: 'application/json',
         headers: {
