@@ -23,7 +23,7 @@ $(document).ready(function () {
 function getBullyStatRegionList() {
     // get list of countries for combo box
     $.ajax({
-        url: `${endpointRoot}/v2/charts/get_bully_stat_region_list`,
+        url: `${window.location.origin}/api/v2/charts/get_bully_stat_region_list`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -56,7 +56,7 @@ function getBullyStatRegionList() {
 function getBullyStat() {
     // get bullying statistics data for bar chart
     $.ajax({
-        url: `${endpointRoot}/v2/charts/get_bully_stat`,
+        url: `${window.location.origin}/api/v2/charts/get_bully_stat`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -78,7 +78,7 @@ function getBullyStat() {
 function getWordCloud() {
     // get word cloud data
     $.ajax({
-        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        url: `${window.location.origin}/api/v2/charts/get_word_cloud`,
         method: 'GET',
         data: {
             label: 'nc'
@@ -97,7 +97,7 @@ function getWordCloud() {
     });
 
     $.ajax({
-        url: `${endpointRoot}/v2/charts/get_word_cloud`,
+        url: `${window.location.origin}/api/v2/charts/get_word_cloud`,
         method: 'GET',
         data: {
             label: 'ng'
@@ -116,7 +116,7 @@ function getWordCloud() {
 
 function getSocmedUsage() {
     $.ajax({
-        url: `${endpointRoot}/v2/charts/get_socmed_usage`,
+        url: `${window.location.origin}/api/v2/charts/get_socmed_usage`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")

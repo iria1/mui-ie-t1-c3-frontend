@@ -6,7 +6,7 @@
     }
 
     try {
-        const response = await fetch(`${endpointRoot}/v1/auth/verify`, {
+        const response = await fetch(`${window.location.origin}/api/v1/auth/verify`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token
