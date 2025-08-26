@@ -34,9 +34,7 @@ $(document).ready(function () {
         getChatbotSessionToken();
     }
 
-    addBubble("Hello, I'm Caro! Ask me anything about cyberbullying!", 'bot');
-
-    restoreMessages();
+    getInitMessage();
 });
 
 //////////////
@@ -88,7 +86,7 @@ async function sendMessage() {
 
 async function getChatbotSessionToken() {
     $.ajax({
-        url: `${window.location.origin}/v1/chatbot/get_session_token`,
+        url: `${window.location.origin}/api/v1/chatbot/get_session_token`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
@@ -102,6 +100,27 @@ async function getChatbotSessionToken() {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
+        }
+    });
+}
+
+async function getInitMessage() {
+    $.ajax({
+        url: `${window.location.origin}/api/v1/chatbot/get_init_message`,
+        method: 'GET',
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt_token")
+        },
+        success: function (data) {
+            data.data.forEach((e) =>
+                addBubble(e, 'bot')
+            );
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error:', errorThrown);
+        },
+        complete: function (data) {
+            restoreMessages();
         }
     });
 }
@@ -127,7 +146,7 @@ function addBubble(text, type) {
     bubble.className = `chat-bubble shadow mb-3 ${type}`;
 
     let mdTextInHtml = converter.makeHtml(text);
-    let cleanHtml = DOMPurify.sanitize(mdTextInHtml, { ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p'] });
+    let cleanHtml = DOMPurify.sanitize(mdTextInHtml, { ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'ul', 'li'] });
     bubble.innerHTML = cleanHtml;
 
     chat.appendChild(bubble);
