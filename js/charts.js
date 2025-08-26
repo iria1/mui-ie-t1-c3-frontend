@@ -1,5 +1,6 @@
 // start with 3 countries pre-selected
 const allRegions = ['Indonesia', 'Malaysia', 'Singapore'];
+const tooltip = document.getElementById('tooltip');
 
 let bullyStat = [];
 let socmedUsage = [];
@@ -311,7 +312,17 @@ function wordCloudChangeSelection(label) {
         color: 'random-dark',
         drawOutOfBound: false,
         shrinkToFit: true,
-        rotationSteps: 2
+        rotationSteps: 2,
+        hover: function (item, dimension, event) {
+            if (item) {
+                tooltip.style.left = (event.pageX + 10) + 'px';
+                tooltip.style.top = (event.pageY + 10) + 'px';
+                tooltip.innerHTML = `Word: <strong>${item[0]}</strong><br>Weight: ${item[1]}`;
+                tooltip.style.display = 'block';
+            } else {
+                tooltip.style.display = 'none';
+            }
+        }
     });
 }
 
