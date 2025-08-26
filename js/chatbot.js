@@ -88,7 +88,7 @@ async function sendMessage() {
 
 async function getChatbotSessionToken() {
     $.ajax({
-        url: `${endpointRoot}/v1/chatbot/get_session_token`,
+        url: `${window.location.origin}/v1/chatbot/get_session_token`,
         method: 'GET',
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt_token")
