@@ -2,6 +2,8 @@ const input = document.getElementById('userInput');
 const btnSend = document.getElementById('btnSend');
 const analyzedMessage = document.getElementById('analyzedMessage');
 const analysisResult = document.getElementById('analysisResult');
+const recipientBox = document.getElementById('recipientBox');
+const senderBox = document.getElementById('senderBox');
 
 let myProgressBar = null;
 
@@ -43,6 +45,9 @@ async function analyzeMessage() {
         }),
         success: function (response) {
             analysisResult.classList.remove('d-none')
+
+            recipientBox.innerHTML = response.data.response.recipient;
+            senderBox.innerHTML = response.data.response.sender;
 
             renderAnalysis(response.data.analysis);
             setProgressBar(response.data.score);
