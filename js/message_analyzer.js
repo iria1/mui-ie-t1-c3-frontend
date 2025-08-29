@@ -46,8 +46,8 @@ async function analyzeMessage() {
         success: function (response) {
             analysisResult.classList.remove('d-none')
 
-            recipientBox.innerHTML = response.data.response.recipient;
-            senderBox.innerHTML = response.data.response.sender;
+            recipientBox.innerHTML = response.data.suggestion.recipient;
+            senderBox.innerHTML = response.data.suggestion.sender;
 
             renderAnalysis(response.data.analysis);
             setProgressBar(response.data.score);
@@ -85,9 +85,13 @@ function setProgressBar(percent) {
     const progressText = document.querySelector('#messageScore .progress-text');
     if (progressText) {
         if (percent > 50) {
-            progressText.style.color = 'red';
+            // progressText.style.color = 'red';
+            progressText.classList.remove('text-warning');
+            progressText.classList.add('text-danger');
         } else {
-            progressText.style.color = 'yellow';
+            // progressText.style.color = 'yellow';
+            progressText.classList.remove('text-danger');
+            progressText.classList.add('text-warning');
         }
 
         progressText.innerHTML = progressText.innerHTML + '%';
