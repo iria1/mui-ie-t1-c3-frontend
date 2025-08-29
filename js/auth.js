@@ -21,7 +21,7 @@
         }
 
         // Token is valid; do nothing and allow the page to load
-        document.body.classList.remove('hidden');
+        document.body.classList.remove('d-none');
     } catch (error) {
         console.error('Authentication check failed:', error);
         window.location.href = '/login.html';
