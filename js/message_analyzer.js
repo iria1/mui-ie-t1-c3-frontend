@@ -51,6 +51,14 @@ async function analyzeMessage() {
 
             renderAnalysis(response.data.analysis);
             setProgressBar(response.data.score);
+
+            recipientBox.style.height = '';
+            senderBox.style.height = '';
+
+            let maxHeight = Math.max(recipientBox.offsetHeight, senderBox.offsetHeight);
+            
+            recipientBox.style.height = maxHeight + 'px';
+            senderBox.style.height = maxHeight + 'px';
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
@@ -85,11 +93,9 @@ function setProgressBar(percent) {
     const progressText = document.querySelector('#messageScore .progress-text');
     if (progressText) {
         if (percent > 50) {
-            // progressText.style.color = 'red';
             progressText.classList.remove('text-warning');
             progressText.classList.add('text-danger');
         } else {
-            // progressText.style.color = 'yellow';
             progressText.classList.remove('text-danger');
             progressText.classList.add('text-warning');
         }

@@ -9,7 +9,7 @@ body, .modal-body, .modal-footer {
     background: #d8d9da;
 }
 
-p, ul {
+p, ul, ol {
     font-family: 'League Spartan', sans-serif;
 }
 
