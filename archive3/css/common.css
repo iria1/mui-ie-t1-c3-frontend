@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Squartiqa4F';
+    src: url('/fonts/Squartiqa4F.woff2') format('woff2'),
+         url('/fonts/Squartiqa4F.woff') format('woff'),
+         url('/fonts/Squartiqa4F.ttf') format('truetype');
+}
+
+body, .modal-body, .modal-footer {
+    background: #d8d9da;
+}
+
+p, ul, ol {
+    font-family: 'League Spartan', sans-serif;
+}
+
+h1, h2 {
+    font-family: 'Squartiqa4F', sans-serif;
+}
+
+.text-bubble {
+    background-color: #a8e4e7
+}
