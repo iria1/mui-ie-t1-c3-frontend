@@ -52,6 +52,20 @@
   <div class="container my-5">
     <h1 class="text-center">MISSION TEXT ANALYSIS: CHECK HARMFUL SENTENCES!</h1>
 
+    <div class="rounded-5 shadow p-4 text-bubble d-flex align-items-center justify-content-between">
+      <div>
+        <p class="fw-bold">Hi, It's Caro Here!</p>
+        <p>I have learned from many examples of cyberbullying messages. I look at words closely (like a word detective 🔍) and highlight the ones that seem harmful. You'll see them in red. If you hover your mouse over them, I can explain why they might be risky.</p>
+
+        <p class="fw-bold">Disclaimer:</p>
+        <p>I will try my best to spot harmful and unkind words in messages. But remember, I'm not perfect. I might miss things like spelling mistakes, abbreviations, or tricky meanings.</p>
+        <p>My answers here are only a guide, not the full truth. If something online makes you feel upset, the best step is to talk to a trusted adult. 💙</p>
+      </div>
+      <div>
+        <img id="caroFinish" src="img/caro_big_pencil.png" width="200">
+      </div>
+    </div>
+
     <h3 class="text-center mt-3">Worried a message might be hurtful? Paste it here to check...</h3>
 
     <div class="d-flex align-items-center rounded-pill bg-light mt-3 px-4" style="height:75px;">
@@ -66,22 +80,29 @@
 
     <div id="analysisResult" class="d-none mt-5">
       <h3>This is how your message may appear to others:</h3>
-      <div class="d-flex align-items-center rounded-pill bg-light mt-3 px-4" style="min-height:50px;">
+      <div class="d-flex align-items-center rounded-5 bg-light mt-3 px-4" style="min-height:50px;">
         <div id="analyzedMessage" class="p-3"></div>
       </div>
 
       <div class="row text-bubble rounded-5 mt-3 p-2">
-        <div class="col-4 d-flex justify-content-center">
-          <div class="text-center">
-            <h3>Risk score</h3>
-            <div id="messageScore" class="cpb-progress-container"></div>
+        <div class="col-4">
+          <div>
+            <h3 class="text-center">Risk score</h3>
+            <div id="messageScore" class="m-auto cpb-progress-container"></div>
+            <div class="bg-white rounded-5 m-1 p-3 w-auto">
+              <p class="fw-bold">Risk Levels</p>
+              <ul>
+                <li>0-49% (Low - Medium Risk): Contains Less Harmful Words</li>
+                <li>50-100% (High Risk): May Contains Many Harmful Words</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="col-4">
-          <div id="recipientBox" class="bg-warning text-bg-warning rounded-5 m-1 p-3"></div>
+          <div id="recipientBox" class="bg-warning text-bg-warning rounded-5 m-1 p-3 h-100"></div>
         </div>
         <div class="col-4">
-          <div id="senderBox" class="bg-danger text-bg-danger rounded-5 m-1 p-3"></div>
+          <div id="senderBox" class="bg-danger text-bg-danger rounded-5 m-1 p-3 h-100"></div>
         </div>
       </div>
     </div>

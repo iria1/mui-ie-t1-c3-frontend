@@ -51,14 +51,6 @@ async function analyzeMessage() {
 
             renderAnalysis(response.data.analysis);
             setProgressBar(response.data.score);
-
-            recipientBox.style.height = '';
-            senderBox.style.height = '';
-
-            let maxHeight = Math.max(recipientBox.offsetHeight, senderBox.offsetHeight);
-            
-            recipientBox.style.height = maxHeight + 'px';
-            senderBox.style.height = maxHeight + 'px';
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('Error:', errorThrown);
